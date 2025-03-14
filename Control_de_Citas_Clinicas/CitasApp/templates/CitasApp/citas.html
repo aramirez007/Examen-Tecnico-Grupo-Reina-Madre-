@@ -1,0 +1,107 @@
+{% extends "CitasApp/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="container">
+    <div class="col">
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <h3 class="d-flex align-items-center float-left">Lista de Citas Activas</h3>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary d-flex float-right" data-bs-toggle="modal" data-bs-target="#generarCitaModal">Nueva Cita</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="generarCitaModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="generarCitaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content m-auto">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="generarCitaModalLabel">Nueva Cita</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body formularios_general">
+                        <div class="container-fluid">
+                            <form id="formulario-cita" action="{% url 'crear_cita' %}" method="post"> 
+                                {% csrf_token %}
+
+                                {{ citas_form.as_p }}
+                        
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Agendar cita</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        {% if citas %}
+                                {% for cita in citas %}
+                                    <div class="col-md-4">
+                                        <a href="{% url 'editar_eliminar_cita' cita.id %}">
+                                            
+                                            <div class="cita-card">
+                                                <div class="cita-header">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <p>No.Cita: <b>{{ cita.numerocita }}</b></p>
+                                                            <p class="d-flex align-items-center float-left">Fecha: {{ cita.fecha }}</p>
+                                                        </div>
+                                                        <div class="col">
+                                                            <p class="d-flex align-items-center float-right">Hora: {{ cita.hora }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="cita-content">
+                                                    <div class="row"><div class="col"><h3>{{ cita.paciente }}</h3></div></div>
+                                                    <br>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <p class="d-flex align-items-center float-left">Medico: {{ cita.medico }}</p>
+                                                        </div>
+                                                        <div class="col">
+                                                            <h3 class="cita-tipo">{{ cita.tipo }}</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="{% static 'CitasApp/js/citas.js' %}"></script>
+
+{% endblock %}

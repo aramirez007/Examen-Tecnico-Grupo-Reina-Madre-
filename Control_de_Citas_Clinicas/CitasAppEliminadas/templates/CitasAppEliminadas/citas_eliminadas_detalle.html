@@ -1,0 +1,42 @@
+{% extends "CitasApp/base.html" %}
+
+{% block content %}
+
+{% load static %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col">
+
+            <div class="jumbotron jumbotron-fluid detalle-encabezado">
+                <div class="container">
+                    <h4>{{ cita.paciente }}</h4>
+                </div>
+            </div>
+
+            <div class="card detalle-card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <form id="formulario-editar-cita">
+                                {% csrf_token %}
+                
+                                {{ cita_eliminada.as_p }}
+                
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col d-flex justify-content-end">
+                                            <a href="{% url 'citas_eliminadas' %}" type="button" class="btn btn-info">Regresar</a>&nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
